@@ -16,7 +16,6 @@ def getItems(mypath):
                 exec(open(join(mypath, x), 'r', encoding='utf-8', errors='ignore').read(), gld, gld)
             except Exception as e:
                 print(e)
-                raise
                 pass
     for x in onlyfiles:
         if x.endswith('.txt'):
