@@ -3,5 +3,9 @@
 /TechStuff/*.png
 /TechStuff/*.jpg
 /TechStuff/widgets.html
+!/Widgets/time.py
+!/Widgets/weather.py
+
+
 
 /.idea/
