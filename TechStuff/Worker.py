@@ -46,6 +46,7 @@ class Worker(threading.Thread):
 
         items = TechStuff.filesHandler.getItems('Widgets/')
         lists = TechStuff.dirsHandler.getItems()
+
         env = Environment(
             loader=FileSystemLoader('.'),
             autoescape=select_autoescape(['html', 'xml'])
