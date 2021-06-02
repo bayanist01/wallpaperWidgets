@@ -1,0 +1,8 @@
+pypiwin32~=223
+pywin32~=300
+Pillow~=8.2.0
+requests~=2.25.1
+selenium~=3.141.0
+Markdown~=3.3.4
+future~=0.18.2
+Jinja2~=3.0.1
