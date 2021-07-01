@@ -325,7 +325,7 @@ if __name__ == '__main__':
                                              ('1 h', None, settime1h),
                                              )
                      ),
-                    ('Allign:', None, (('left', None, setallignleft),
+                    ('Align:', None, (('left', None, setallignleft),
                                        ('right', None, setallignright)
                                        )
                      ),
