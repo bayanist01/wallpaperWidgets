@@ -18,7 +18,7 @@ try:
 except ImportError:
     import win32gui
 
-
+# класс из интернета
 class SysTrayIcon:
     QUIT = 'QUIT'
     SPECIAL_ACTIONS = [QUIT]
@@ -210,7 +210,7 @@ class SysTrayIcon:
         else:
             menu_action(self)
 
-
+# тоже из интернета
 def non_string_iterable(obj):
     try:
         iter(obj)
