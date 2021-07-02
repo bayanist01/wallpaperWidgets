@@ -35,25 +35,22 @@ class Worker(threading.Thread):
 
     def run(self):
         """Запуск потока"""
-        print('WORKER STARTED!')
+        # получаем настройки из базы данных
         settings = db.ConfigDataBase.get('allign')[0]
         allign = 'wrap-reverse' if settings == 'right' else 'wrap'
         settings = db.ConfigDataBase.get('blockwidth')[0]
         blockwidth = int(settings)
         settings = db.ConfigDataBase.get('darktheme')[0]
         darktheme = bool(int(settings))
-
-
+    # получаем файлы из которых будем делать виджеты
         items = TechStuff.filesHandler.getItems('Widgets/')
         lists = TechStuff.dirsHandler.getItems()
-
+    # подключаем шаблон html- страницы
         env = Environment(
             loader=FileSystemLoader('.'),
             autoescape=select_autoescape(['html', 'xml'])
         )
-
         template = env.get_template('TechStuff/template.html')
-
         rendered_page = template.render(
             path_to_old_wallpaper='oldWallpaper.jpg',
             row_column='column',
@@ -77,13 +74,10 @@ class Worker(threading.Thread):
         # start chrome browser
         driver = webdriver.Chrome('TechStuff/chromedriver.exe', options=options)
 
-
         driver.set_window_size(*get_real_resolution())
         driver.get(os.path.abspath('TechStuff/widgets.html'))
         sleep(1)
         driver.get_screenshot_as_file("TechStuff/newWallpaper.png")
         driver.quit()
 
-
         wp.Wallpaper.set("TechStuff/newWallpaper.png")
-        print('WORKER STOPPED!')

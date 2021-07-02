@@ -20,7 +20,6 @@ class Reminder(threading.Thread):
 
     def run(self):
         """Запуск потока"""
-        # бесконечный цикл вайл ворк
         while not self.workdone.is_set():
             print('time check!')
             if not startWidgets.get_reg('WallPaper').endswith('TechStuff\\newWallpaper.jpg'):

@@ -15,7 +15,3 @@ def getItems():
         item = {'name': x, 'content': TechStuff.filesHandler.getItems(join(mypath, x))}
         reslist.append(item)
     return reslist
-
-
-if __name__ == '__main__':
-    print(getItems())

@@ -234,7 +234,7 @@ if __name__ == '__main__':
     icon = 'Techstuff/icon.ico'
     hover_text = "Wallpaper Widgets"
 
-    db.ConfigDataBase.createtable()
+    db.ConfigDataBase.createtable()          # создаем базу данных для хранения настроек между перезапусками приложения
     settings = db.ConfigDataBase.getall()
     if not settings:
         db.ConfigDataBase.set('time', '10')
@@ -244,7 +244,7 @@ if __name__ == '__main__':
 
     workdone = threading.Event()
 
-    timer = TechStuff.timer.Reminder(workdone)
+    timer = TechStuff.timer.Reminder(workdone)    # создаем поток который будет следить за временем и изменениями обоев
     timer.start()
 
 
@@ -343,10 +343,10 @@ if __name__ == '__main__':
                     )
 
 
-    def bye(sysTrayIcon):
-        workdone.set()
-        db.ConfigDataBase.closetable()
-        wh.Wallpaper.set('TechStuff/oldWallpaper.jpg')
+    def bye(sysTrayIcon):     # функция которая сработает при закрытии приложения через меню
+        workdone.set()        # останавлиаем потоки
+        db.ConfigDataBase.closetable()        # сохраняем измениния в базе данных
+        wh.Wallpaper.set('TechStuff/oldWallpaper.jpg')       # возвращаем чистые обои
 
 
     SysTrayIcon(icon, hover_text, menu_options, on_quit=bye, default_menu_index=0)

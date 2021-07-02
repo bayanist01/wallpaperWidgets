@@ -31,7 +31,3 @@ def getItems(mypath):
                     'content': markdown.markdown(content)}
             reslist.append(item)
     return reslist
-
-
-if __name__ == '__main__':
-    print(getItems())

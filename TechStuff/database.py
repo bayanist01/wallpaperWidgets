@@ -5,9 +5,7 @@ import threading
 
 
 class ConfigDataBase:
-
     lock = None
-
     # Создание таблицы
     @classmethod
     def createtable(cls):

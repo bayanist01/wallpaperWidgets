@@ -11,7 +11,7 @@ from tempfile import NamedTemporaryFile
 
 from PIL import Image
 
-
+# из интернета с доработками
 class Wallpaper:
     # Get
     @staticmethod
@@ -24,7 +24,6 @@ class Wallpaper:
             tempFile = NamedTemporaryFile(mode="wb", suffix='.jpg').name
             copyfile(currentWallpaper, tempFile)
             return tempFile
-
     # Set
     @staticmethod
     def set(wallpaperToBeSet):
@@ -44,7 +43,6 @@ class Wallpaper:
                 windll.user32.SystemParametersInfoW(
                     20, 0, path.abspath('TechStuff/newWallpaper.jpg'), 3)
                 return True
-
         # Check it is a Pillow object
         elif str(wallpaperToBeSet).find('PIL'):
             with NamedTemporaryFile(mode="wb", suffix='.jpg') as tempFile:

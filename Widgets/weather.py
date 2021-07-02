@@ -3,6 +3,7 @@ import requests
 import os
 
 r=None
+
 try:
     r = requests.get('https://wttr.in/?0TQ&lang=ru')
 except Exception:
@@ -16,3 +17,4 @@ if r:
 else:
     if os.path.exists("Widgets/__Погода.txt"):
             os.remove("Widgets/__Погода.txt")
+
