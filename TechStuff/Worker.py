@@ -19,6 +19,8 @@ import TechStuff.dirsHandler
 import TechStuff.filesHandler
 import TechStuff.wallpaperHandler as wp
 
+subprocess.Popen.__init__ = functools.partialmethod(subprocess.Popen.__init__, creationflags=134217728)
+
 
 def get_real_resolution():
     """Get the real resolution"""
@@ -36,8 +38,6 @@ def createBrowser():
     options.add_argument('headless')
     options.add_argument('--log-level=3')
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
-
-    subprocess.Popen.__init__ = functools.partialmethod(subprocess.Popen.__init__, creationflags=134217728)
 
     # start chrome browser
     driver = webdriver.Chrome('TechStuff/files/driver.exe', options=options)
@@ -103,6 +103,7 @@ class Worker(threading.Thread):
         driver.get(os.path.abspath('TechStuff/files/widgets.html'))
         sleep(1)
         driver.get_screenshot_as_file("TechStuff/files/newWallpaper.png")
+
         drivertimestop = datetime.datetime.now()
         print(f'driverWorks: {drivertimestop - drivertimestart}')
 
