@@ -4,6 +4,9 @@ import os
 import threading
 import datetime
 
+import subprocess
+import functools
+
 import win32gui
 import win32print
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -32,6 +35,9 @@ def createBrowser():
     options.add_argument('headless')
     options.add_argument('--log-level=3')
     options.add_experimental_option('excludeSwitches', ['enable-logging'])
+
+    subprocess.Popen.__init__ = functools.partialmethod(subprocess.Popen.__init__, creationflags=134217728)
+
     # start chrome browser
     driver = webdriver.Chrome('TechStuff/driver.exe', options=options)
     return driver
@@ -90,7 +96,9 @@ class Worker(threading.Thread):
 
         driver = self.browser
         driver.set_window_size(*get_real_resolution())
+
         drivertimestart = datetime.datetime.now()
+
         driver.get(os.path.abspath('TechStuff/widgets.html'))
         driver.get_screenshot_as_file("TechStuff/newWallpaper.png")
         drivertimestop = datetime.datetime.now()

@@ -3,7 +3,6 @@
 import threading
 from datetime import datetime, timedelta
 from time import sleep
-from selenium import webdriver
 
 import TechStuff.Worker
 import TechStuff.database as db
@@ -20,16 +19,7 @@ class Reminder(threading.Thread):
         self.needrefresh = needrefresh
         self.time = datetime.fromisocalendar(2000, 1, 1)
 
-        # prepare the option for the chrome driver
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        options.add_argument('--log-level=3')
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-
-        # start chrome browser
-        driver = webdriver.Chrome('TechStuff/driver.exe', options=options)
-
-        self.browser = driver
+        self.browser = TechStuff.Worker.createBrowser()
 
     def run(self):
         """Запуск потока"""
