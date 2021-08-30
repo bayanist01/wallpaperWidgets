@@ -6,6 +6,6 @@
 !/Widgets/time.py
 !/Widgets/weather.py
 
-
+*.rar
 /.idea/
 /venv/
