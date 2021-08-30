@@ -2,12 +2,17 @@
 Widgets for windows on wallpapers  
 
 Виджеты для Windows, которые выводятся прямо на обои  
+
 ![Виджеты](https://sun9-37.userapi.com/impg/E-opKh7GmCuTVXsN79RjJqnyadOaeXOKRDvsMQ/Ucc5DxOGd58.jpg?size=1920x1080&quality=96&sign=6848828fa784260e06431f70181349b7&type=album)
 
 ## Установка
 1. Скачать selenium webdriver для нужной версии вашего браузера, 
-и положить его в TechStuff/files/driver.exe 
-2. Установить необходимые библиотеки
+и положить его в TechStuff/files/driver.exe   
+[Chrome например](https://chromedriver.chromium.org/downloads)
+2. Установить необходимые библиотеки  
+`
+pip install -r requirements.txt
+`
 3. Переписать autorun.bat
 4. (Опционально) Добавить autorun.bat в автозагрузку
 
