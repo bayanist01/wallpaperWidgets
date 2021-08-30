@@ -48,7 +48,7 @@ class Worker(threading.Thread):
 
     def __init__(self, browser=None):
         super(Worker, self).__init__()
-        self.browser = browser if browser is not None else createBrowser()
+        self.browser = browser or createBrowser()
 
     def run(self):
         start = datetime.datetime.now()
