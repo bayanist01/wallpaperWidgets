@@ -12,14 +12,12 @@ import startWidgets
 
 class TimeKeeper(threading.Thread):
 
-    def __init__(self, workdone, needrefresh):
+    def __init__(self, workdone, browser):
         """Инициализация потока"""
         super(TimeKeeper, self).__init__()
         self.workdone = workdone
-        self.needrefresh = needrefresh
         self.time = datetime.fromisocalendar(2000, 1, 1)
-
-        self.browser = TechStuff.Worker.createBrowser()
+        self.browser = browser
 
     def run(self):
         """Запуск потока"""
@@ -33,13 +31,12 @@ class TimeKeeper(threading.Thread):
             dt = now - self.time
             timeoffset = int(db.ConfigDataBase.get('time')[0])
 
-            if dt > timedelta(minutes=timeoffset) or self.needrefresh.is_set():
+            if dt > timedelta(minutes=timeoffset):
                 self.startworker()
 
             sleep(15)
 
     def startworker(self):
-        self.needrefresh.clear()
         worker = TechStuff.Worker.Worker(self.browser)
         worker.start()
         self.time = datetime.now()

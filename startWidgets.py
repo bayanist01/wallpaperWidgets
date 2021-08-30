@@ -233,8 +233,11 @@ def get_reg(name):
         return None
 
 
+_browser = TechStuff.Worker.createBrowser()
+
+
 def refresh():
-    TechStuff.Worker.Worker().start()
+    TechStuff.Worker.Worker(_browser).start()
 
 
 def open_folder():
@@ -283,7 +286,7 @@ setthemedark = partial(settheme, '1')
 
 def bye(workdone):  # функция которая сработает при закрытии приложения через меню
     workdone.set()  # останавлиаем потоки
-    wh.Wallpaper.set('TechStuff/oldWallpaper.jpg')  # возвращаем чистые обои
+    wh.Wallpaper.set('TechStuff/files/oldWallpaper.jpg')  # возвращаем чистые обои
 
 
 def run():
@@ -299,10 +302,9 @@ def run():
         db.ConfigDataBase.set('darktheme', '0')
 
     workdone = threading.Event()
-    needrefresh = threading.Event()
 
     # создаем поток который будет следить за временем и изменениями обоев
-    timer = TechStuff.timer.TimeKeeper(workdone, needrefresh)
+    timer = TechStuff.timer.TimeKeeper(workdone, _browser)
     timer.start()
 
     menu_options = (('Refresh', None, refresh),
