@@ -25,8 +25,8 @@ class TimeKeeper(threading.Thread):
         """Запуск потока"""
         while not self.workdone.is_set():
 
-            if not startWidgets.get_reg('WallPaper').endswith('TechStuff\\newWallpaper.jpg'):
-                wh.Wallpaper.copy(copyTo='TechStuff', fileName='files/oldWallpaper.jpg')
+            if not startWidgets.get_reg('WallPaper').endswith('TechStuff\\files\\newWallpaper.jpg'):
+                wh.Wallpaper.copy(copyTo='TechStuff/files', fileName='oldWallpaper.jpg')
                 self.startworker()
 
             now = datetime.now()

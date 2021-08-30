@@ -43,9 +43,9 @@ class Wallpaper:
             else:
                 image = Image.open(wallpaperToBeSet)
                 rgb_im = image.convert('RGB')
-                rgb_im.save('TechStuff/newWallpaper.jpg', quality=100)
+                rgb_im.save('TechStuff/files/newWallpaper.jpg', quality=100)
                 windll.user32.SystemParametersInfoW(
-                    20, 0, path.abspath('TechStuff/newWallpaper.jpg'), 3)
+                    20, 0, path.abspath('TechStuff/files/newWallpaper.jpg'), 3)
                 return True
         # Check it is a Pillow object
         elif str(wallpaperToBeSet).find('PIL'):

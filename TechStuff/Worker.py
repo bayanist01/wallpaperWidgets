@@ -6,6 +6,7 @@ import datetime
 
 import subprocess
 import functools
+from time import sleep
 
 import win32gui
 import win32print
@@ -39,7 +40,7 @@ def createBrowser():
     subprocess.Popen.__init__ = functools.partialmethod(subprocess.Popen.__init__, creationflags=134217728)
 
     # start chrome browser
-    driver = webdriver.Chrome('TechStuff/driver.exe', options=options)
+    driver = webdriver.Chrome('TechStuff/files/driver.exe', options=options)
     return driver
 
 
@@ -77,7 +78,7 @@ class Worker(threading.Thread):
         )
         template = env.get_template('TechStuff/template.html')
         rendered_page = template.render(
-            path_to_old_wallpaper='files/oldWallpaper.jpg',
+            path_to_old_wallpaper='oldWallpaper.jpg',
             row_column='column',
             is_reverse=allign,
             bg_rgb_color='0,0,0' if darktheme else '255,255,255',
@@ -88,7 +89,7 @@ class Worker(threading.Thread):
             lists=lists
         )
 
-        with codecs.open("TechStuff/widgets.html", "w", "utf-8") as temp:
+        with codecs.open("TechStuff/files/widgets.html", "w", "utf-8") as temp:
             temp.write(rendered_page)
 
         templatetime = datetime.datetime.now()
@@ -99,15 +100,16 @@ class Worker(threading.Thread):
 
         drivertimestart = datetime.datetime.now()
 
-        driver.get(os.path.abspath('TechStuff/widgets.html'))
-        driver.get_screenshot_as_file("TechStuff/newWallpaper.png")
+        driver.get(os.path.abspath('TechStuff/files/widgets.html'))
+        sleep(1)
+        driver.get_screenshot_as_file("TechStuff/files/newWallpaper.png")
         drivertimestop = datetime.datetime.now()
         print(f'driverWorks: {drivertimestop - drivertimestart}')
 
         screenshot = datetime.datetime.now()
         print(f'Screenshot: {screenshot - getitems}')
 
-        wp.Wallpaper.set("TechStuff/newWallpaper.png")
+        wp.Wallpaper.set("TechStuff/files/newWallpaper.png")
 
         stop = datetime.datetime.now()
         print(f'WpSet: {stop - screenshot}')

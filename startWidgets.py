@@ -287,7 +287,7 @@ def bye(workdone):  # функция которая сработает при з
 
 
 def run():
-    icon = 'Techstuff/icon.ico'
+    icon = 'Techstuff/files/icon.ico'
     hover_text = "Wallpaper Widgets"
 
     db.ConfigDataBase.createtable()  # создаем базу данных для хранения настроек между перезапусками приложения
