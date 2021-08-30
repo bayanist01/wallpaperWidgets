@@ -32,7 +32,7 @@ def get_real_resolution():
     return w, h
 
 
-def createBrowser():
+def create_browser():
     # prepare the option for the chrome driver
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
@@ -48,7 +48,7 @@ class Worker(threading.Thread):
 
     def __init__(self, browser=None):
         super(Worker, self).__init__()
-        self.browser = browser or createBrowser()
+        self.browser = browser or create_browser()
 
     def run(self):
         start = datetime.datetime.now()
@@ -65,8 +65,8 @@ class Worker(threading.Thread):
         print(f'Settings: {settings - start}')
 
         # получаем файлы из которых будем делать виджеты
-        items = TechStuff.filesHandler.getItems('Widgets/')
-        lists = TechStuff.dirsHandler.getItems()
+        items = TechStuff.filesHandler.get_items('Widgets/')
+        lists = TechStuff.dirsHandler.get_items()
 
         getitems = datetime.datetime.now()
         print(f'GetItems:{getitems - settings}')

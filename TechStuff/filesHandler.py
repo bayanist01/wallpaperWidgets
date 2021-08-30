@@ -6,7 +6,7 @@ import markdown
 from datetime import datetime
 
 
-def getItems(mypath):
+def get_items(mypath):
     start = datetime.now()
     reslist = []
     onlyfiles = [f for f in sorted(listdir(mypath)) if isfile(join(mypath, f))]

@@ -233,7 +233,7 @@ def get_reg(name):
         return None
 
 
-_browser = TechStuff.Worker.createBrowser()
+_browser = TechStuff.Worker.create_browser()
 
 
 def refresh():
