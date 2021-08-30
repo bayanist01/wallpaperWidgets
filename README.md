@@ -13,8 +13,13 @@ Widgets for windows on wallpapers
 `
 pip install -r requirements.txt
 `
-3. Переписать autorun.bat
+3. Переписать autorun.bat  
+Для запуска python скрипта в фоне без окна консоли используйте `pythonw` вместо `python`
 4. (Опционально) Добавить autorun.bat в автозагрузку
+
+### Важно
+Если виджеты исправно работали и вдруг перестали, скорее всего ваш браузер обновился и вам нужно скачать новый webdriver  
+
 
 ![Белая тема](https://sun9-13.userapi.com/impg/irexVmUWHpSPqZxYD3StJgpbKPKG--Ywd5c9Hg/BiJjbSMI5Ms.jpg?size=1920x1080&quality=96&sign=766fcda13cc62508f01d8a7f9568741b&type=album)
 
