@@ -46,7 +46,7 @@ def createBrowser():
 class Worker(threading.Thread):
 
     def __init__(self, browser=None):
-        threading.Thread.__init__(self)
+        super(Worker, self).__init__()
         self.browser = browser if browser is not None else createBrowser()
 
     def run(self):
@@ -77,7 +77,7 @@ class Worker(threading.Thread):
         )
         template = env.get_template('TechStuff/template.html')
         rendered_page = template.render(
-            path_to_old_wallpaper='oldWallpaper.jpg',
+            path_to_old_wallpaper='files/oldWallpaper.jpg',
             row_column='column',
             is_reverse=allign,
             bg_rgb_color='0,0,0' if darktheme else '255,255,255',

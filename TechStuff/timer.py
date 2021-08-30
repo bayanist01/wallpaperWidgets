@@ -10,11 +10,11 @@ import TechStuff.wallpaperHandler as wh
 import startWidgets
 
 
-class Reminder(threading.Thread):
+class TimeKeeper(threading.Thread):
 
     def __init__(self, workdone, needrefresh):
         """Инициализация потока"""
-        threading.Thread.__init__(self)
+        super(TimeKeeper, self).__init__()
         self.workdone = workdone
         self.needrefresh = needrefresh
         self.time = datetime.fromisocalendar(2000, 1, 1)
@@ -26,7 +26,7 @@ class Reminder(threading.Thread):
         while not self.workdone.is_set():
 
             if not startWidgets.get_reg('WallPaper').endswith('TechStuff\\newWallpaper.jpg'):
-                wh.Wallpaper.copy(copyTo='TechStuff', fileName='oldWallpaper.jpg')
+                wh.Wallpaper.copy(copyTo='TechStuff', fileName='files/oldWallpaper.jpg')
                 self.startworker()
 
             now = datetime.now()

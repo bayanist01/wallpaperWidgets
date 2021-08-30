@@ -302,7 +302,7 @@ def run():
     needrefresh = threading.Event()
 
     # создаем поток который будет следить за временем и изменениями обоев
-    timer = TechStuff.timer.Reminder(workdone, needrefresh)
+    timer = TechStuff.timer.TimeKeeper(workdone, needrefresh)
     timer.start()
 
     menu_options = (('Refresh', None, refresh),

@@ -2,7 +2,7 @@
 /TechStuff/*.db
 /TechStuff/*.png
 /TechStuff/*.jpg
-/TechStuff/widgets.html
+/TechStuff/files/widgets.html
 !/Widgets/time.py
 !/Widgets/weather.py
 
