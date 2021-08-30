@@ -2,7 +2,7 @@
 import codecs
 import os
 import threading
-from time import sleep
+import datetime
 
 import win32gui
 import win32print
@@ -26,26 +26,45 @@ def get_real_resolution():
     return w, h
 
 
+def createBrowser():
+    # prepare the option for the chrome driver
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('--log-level=3')
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    # start chrome browser
+    driver = webdriver.Chrome('TechStuff/driver.exe', options=options)
+    return driver
+
+
 class Worker(threading.Thread):
 
-    def __init__(self):
-        """Инициализация потока"""
+    def __init__(self, browser=None):
         threading.Thread.__init__(self)
-
+        self.browser = browser if browser is not None else createBrowser()
 
     def run(self):
-        """Запуск потока"""
+        start = datetime.datetime.now()
+
         # получаем настройки из базы данных
-        settings = db.ConfigDataBase.get('allign')[0]
-        allign = 'wrap-reverse' if settings == 'right' else 'wrap'
-        settings = db.ConfigDataBase.get('blockwidth')[0]
-        blockwidth = int(settings)
-        settings = db.ConfigDataBase.get('darktheme')[0]
-        darktheme = bool(int(settings))
-    # получаем файлы из которых будем делать виджеты
+        settings = db.ConfigDataBase.getall()
+        settings = {name: content for name, content in settings}
+
+        allign = 'wrap-reverse' if settings['allign'] == 'right' else 'wrap'
+        blockwidth = int(settings['blockwidth'])
+        darktheme = bool(int(settings['darktheme']))
+
+        settings = datetime.datetime.now()
+        print(f'Settings: {settings - start}')
+
+        # получаем файлы из которых будем делать виджеты
         items = TechStuff.filesHandler.getItems('Widgets/')
         lists = TechStuff.dirsHandler.getItems()
-    # подключаем шаблон html- страницы
+
+        getitems = datetime.datetime.now()
+        print(f'GetItems:{getitems - settings}')
+
+        # подключаем шаблон html- страницы
         env = Environment(
             loader=FileSystemLoader('.'),
             autoescape=select_autoescape(['html', 'xml'])
@@ -62,22 +81,28 @@ class Worker(threading.Thread):
             blocks=items,
             lists=lists
         )
+
         with codecs.open("TechStuff/widgets.html", "w", "utf-8") as temp:
             temp.write(rendered_page)
 
-        # prepare the option for the chrome driver
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        options.add_argument('--log-level=3')
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        templatetime = datetime.datetime.now()
+        print(f'TemplateWorks: {templatetime - getitems}')
 
-        # start chrome browser
-        driver = webdriver.Chrome('TechStuff/chromedriver.exe', options=options)
-
+        driver = self.browser
         driver.set_window_size(*get_real_resolution())
+        drivertimestart = datetime.datetime.now()
         driver.get(os.path.abspath('TechStuff/widgets.html'))
-        sleep(1)
         driver.get_screenshot_as_file("TechStuff/newWallpaper.png")
-        driver.quit()
+        drivertimestop = datetime.datetime.now()
+        print(f'driverWorks: {drivertimestop - drivertimestart}')
+
+        screenshot = datetime.datetime.now()
+        print(f'Screenshot: {screenshot - getitems}')
 
         wp.Wallpaper.set("TechStuff/newWallpaper.png")
+
+        stop = datetime.datetime.now()
+        print(f'WpSet: {stop - screenshot}')
+
+        delta = stop - start
+        print(delta)

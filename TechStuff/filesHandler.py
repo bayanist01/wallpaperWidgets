@@ -3,20 +3,26 @@ from os import listdir
 from os.path import isfile, join
 
 import markdown
+from datetime import datetime
 
 
 def getItems(mypath):
+    start = datetime.now()
     reslist = []
     onlyfiles = [f for f in sorted(listdir(mypath)) if isfile(join(mypath, f))]
+    startpy = datetime.now()
     for x in onlyfiles:
         if x.endswith('.py') and not x.startswith('_'):
             try:
-                print(x)
+                # TODO сделать быстее
                 gld = dict()
                 exec(open(join(mypath, x), 'r', encoding='utf-8', errors='ignore').read(), gld, gld)
             except Exception as e:
                 print(e)
-                pass
+
+    stoppy = datetime.now()
+    print('EXEC', stoppy-startpy)
+
     for x in onlyfiles:
         if x.endswith('.txt'):
             with open(join(mypath, x), encoding='utf-8', errors='ignore') as f:
@@ -30,4 +36,8 @@ def getItems(mypath):
             item = {'name': x[:-3].lstrip('_'),
                     'content': markdown.markdown(content)}
             reslist.append(item)
+
+    stop = datetime.now()
+    print('ALL', stop-start)
+
     return reslist

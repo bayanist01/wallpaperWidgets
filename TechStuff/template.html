@@ -11,6 +11,7 @@
         width: 100vw;
         height: 100vh;
         overflow: hidden;
+        font-family: Helvetica;
       }
       .flex {
         padding: 0px;
@@ -24,7 +25,7 @@
         margin: 10px;
       }
       .flex-itm {
-        padding: 3px;
+        padding: 5px 10px;
         background: rgba({{bg_rgb_color}},{{bg_opacity}});
         font-size: 1.5rem;
         color: rgba({{text_rgb_color}}, 1);
@@ -32,7 +33,7 @@
         width: {{width_percent}}%;
       }
       .flex-itm2 {
-        padding: 3px;
+        padding: 10px;
         background: rgba({{bg_rgb_color}},{{bg_opacity}});
         font-size: 1.5rem;
         color: rgba({{text_rgb_color}}, 1);
@@ -47,16 +48,16 @@
       <div class="flex">
           {% for block in blocks %}
           <div style="border-radius: 8px;" class="flex-itm">
-              <b style="font-size:1.7rem;">{{block.name|safe}}</b> <br>
+              <div style=" text-align: center;"> <b style="font-size:1.7rem;">{{block.name|safe}}</b></div>
               {{block.content|safe}}
           </div>
           {% endfor %}
           {% for list in lists %}
           <div style="border-radius: 3px;" class="flex-itm">
-              <b style="font-size:1.7rem;">{{list.name|safe}}</b> <br>
+              <div style=" text-align: center;"> <b style="font-size:1.7rem;">{{list.name|safe}}</b> </div>
               {% for block in list.content %}
                   <div style="border-radius: 8px;" class="flex-itm2">
-                      <b style="font-size:1.7rem;">{{block.name|safe}}</b> <br>
+                      <div style=" text-align: center;"> <b style="font-size:1.7rem;">{{block.name|safe}}</b> </div> <br>
                       {{block.content|safe}}
                   </div>
               {% endfor %}

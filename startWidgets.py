@@ -3,6 +3,7 @@ import os
 import subprocess
 import threading
 import winreg
+from functools import partial
 
 import win32api  # package pywin32
 import win32con
@@ -17,6 +18,7 @@ try:
     import winxpgui as win32gui
 except ImportError:
     import win32gui
+
 
 # класс из интернета
 class SysTrayIcon:
@@ -208,9 +210,10 @@ class SysTrayIcon:
         if menu_action == self.QUIT:
             win32gui.DestroyWindow(self.hwnd)
         else:
-            menu_action(self)
+            menu_action()
 
-# тоже из интернета
+
+# тоже из интернета, шло в комплекте
 def non_string_iterable(obj):
     try:
         iter(obj)
@@ -230,11 +233,64 @@ def get_reg(name):
         return None
 
 
-if __name__ == '__main__':
+def refresh():
+    TechStuff.Worker.Worker().start()
+
+
+def open_folder():
+    subprocess.Popen(f'explorer "{os.path.abspath("Widgets/")}"')
+
+
+def settime(time):
+    db.ConfigDataBase.set('time', time)
+
+
+settime1 = partial(settime, '1')
+settime5 = partial(settime, '5')
+settime10 = partial(settime, '10')
+settime30 = partial(settime, '30')
+settime1h = partial(settime, '60')
+
+
+def setallign(allign):
+    db.ConfigDataBase.set('allign', allign)
+    refresh()
+
+
+setallignleft = partial(setallign, 'left')
+setallignright = partial(setallign, 'right')
+
+
+def setwidth(w):
+    db.ConfigDataBase.set('blockwidth', w)
+    refresh()
+
+
+setwidth15 = partial(setwidth, '15')
+setwidth20 = partial(setwidth, '20')
+setwidth25 = partial(setwidth, '25')
+setwidth30 = partial(setwidth, '30')
+
+
+def settheme(light):
+    db.ConfigDataBase.set('darktheme', light)
+    refresh()
+
+
+setthemelight = partial(settheme, '0')
+setthemedark = partial(settheme, '1')
+
+
+def bye(workdone):  # функция которая сработает при закрытии приложения через меню
+    workdone.set()  # останавлиаем потоки
+    wh.Wallpaper.set('TechStuff/oldWallpaper.jpg')  # возвращаем чистые обои
+
+
+def run():
     icon = 'Techstuff/icon.ico'
     hover_text = "Wallpaper Widgets"
 
-    db.ConfigDataBase.createtable()          # создаем базу данных для хранения настроек между перезапусками приложения
+    db.ConfigDataBase.createtable()  # создаем базу данных для хранения настроек между перезапусками приложения
     settings = db.ConfigDataBase.getall()
     if not settings:
         db.ConfigDataBase.set('time', '10')
@@ -243,110 +299,32 @@ if __name__ == '__main__':
         db.ConfigDataBase.set('darktheme', '0')
 
     workdone = threading.Event()
+    needrefresh = threading.Event()
 
-    timer = TechStuff.timer.Reminder(workdone)    # создаем поток который будет следить за временем и изменениями обоев
+    # создаем поток который будет следить за временем и изменениями обоев
+    timer = TechStuff.timer.Reminder(workdone, needrefresh)
     timer.start()
-
-
-    def refresh(sysTrayIcon):
-        worker = TechStuff.Worker.Worker()
-        worker.start()
-
-
-    def open_folder(sysTrayIcon):
-        subprocess.Popen(f'explorer "{os.path.abspath("Widgets/")}"')
-
-
-    def settime1(sysTrayIcon):
-        db.ConfigDataBase.set('time', '1')
-
-
-    def settime5(sysTrayIcon):
-        db.ConfigDataBase.set('time', '5')
-
-
-    def settime10(sysTrayIcon):
-        db.ConfigDataBase.set('time', '10')
-
-
-    def settime30(sysTrayIcon):
-        db.ConfigDataBase.set('time', '30')
-
-
-    def settime1h(sysTrayIcon):
-        db.ConfigDataBase.set('time', '60')
-
-
-    def setallignleft(sysTrayIcon):
-        db.ConfigDataBase.set('allign', 'left')
-        refresh(None)
-
-
-    def setallignright(sysTrayIcon):
-        db.ConfigDataBase.set('allign', 'right')
-        refresh(None)
-
-
-    def setwidth15(sysTrayIcon):
-        db.ConfigDataBase.set('blockwidth', '15')
-        refresh(None)
-
-
-    def setwidth20(sysTrayIcon):
-        db.ConfigDataBase.set('blockwidth', '20')
-        refresh(None)
-
-
-    def setwidth25(sysTrayIcon):
-        db.ConfigDataBase.set('blockwidth', '25')
-        refresh(None)
-
-
-    def setwidth30(sysTrayIcon):
-        db.ConfigDataBase.set('blockwidth', '30')
-        refresh(None)
-
-
-    def setthemelight(sysTrayIcon):
-        db.ConfigDataBase.set('darktheme', '0')
-        refresh(None)
-
-
-    def setthemedark(sysTrayIcon):
-        db.ConfigDataBase.set('darktheme', '1')
-        refresh(None)
-
 
     menu_options = (('Refresh', None, refresh),
                     ('Update every:', None, (('1 min', None, settime1),
                                              ('5 min', None, settime5),
                                              ('10 min', None, settime10),
                                              ('30 min', None, settime30),
-                                             ('1 h', None, settime1h),
-                                             )
-                     ),
+                                             ('1 h', None, settime1h),)),
                     ('Align:', None, (('left', None, setallignleft),
-                                       ('right', None, setallignright)
-                                       )
-                     ),
+                                      ('right', None, setallignright))),
                     ('Width:', None, (('15%', None, setwidth15),
                                       ('20%', None, setwidth20),
                                       ('25%', None, setwidth25),
-                                      ('30%', None, setwidth30)
-                                      )
-                     ),
+                                      ('30%', None, setwidth30))),
                     ('Theme:', None, (('light', None, setthemelight),
-                                      ('dark', None, setthemedark)
-                                      )
-                     ),
-                    ('Open Widgets Folder', None, open_folder)
-                    )
+                                      ('dark', None, setthemedark))),
+                    ('Open Widgets Folder', None, open_folder))
+
+    byebye = partial(bye, workdone)
+
+    SysTrayIcon(icon, hover_text, menu_options, on_quit=byebye, default_menu_index=0)
 
 
-    def bye(sysTrayIcon):     # функция которая сработает при закрытии приложения через меню
-        workdone.set()        # останавлиаем потоки
-        db.ConfigDataBase.closetable()        # сохраняем измениния в базе данных
-        wh.Wallpaper.set('TechStuff/oldWallpaper.jpg')       # возвращаем чистые обои
-
-
-    SysTrayIcon(icon, hover_text, menu_options, on_quit=bye, default_menu_index=0)
+if __name__ == '__main__':
+    run()

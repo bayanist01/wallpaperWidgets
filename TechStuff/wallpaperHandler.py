@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
-# Wallpaper.get() Get current wallpapers path. For getting as Pillow image object, use True as parameter.
-# Wallpaper.set() Set wallpaper. Can be path of image or Pillow object. File type doesn't matter and path can be absolute or relative.
-# Wallpaper.copy() - Copy current wallpaper. First parameter is directory and the second is file name. File extension should be JPG. Default directory is current directory and file name is 'wallpaper.jpg'
+# Wallpaper.get() Get current wallpapers path. For getting as Pillow image object, use True as
+# parameter.
+# Wallpaper.set() Set wallpaper. Can be path of image or Pillow object. File type doesn't matter and path
+# can be absolute or relative.
+# Wallpaper.copy() - Copy current wallpaper. First parameter is directory and the second
+# is file name. File extension should be JPG. Default directory is current directory and file name is 'wallpaper.jpg'
 
 
 from ctypes import windll
@@ -11,19 +14,20 @@ from tempfile import NamedTemporaryFile
 
 from PIL import Image
 
+
 # из интернета с доработками
 class Wallpaper:
     # Get
     @staticmethod
     def get(returnImgObj=False):
-        currentWallpaper = getenv(
-            'APPDATA') + "\\Microsoft\\Windows\\Themes\\TranscodedWallpaper"
+        currentWallpaper = getenv('APPDATA') + "\\Microsoft\\Windows\\Themes\\TranscodedWallpaper"
         if returnImgObj:
             return Image.open(currentWallpaper)
         else:
             tempFile = NamedTemporaryFile(mode="wb", suffix='.jpg').name
             copyfile(currentWallpaper, tempFile)
             return tempFile
+
     # Set
     @staticmethod
     def set(wallpaperToBeSet):
